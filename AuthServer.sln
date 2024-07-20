@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.Api", "AuthServe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.Core", "AuthServer.Core\AuthServer.Core.csproj", "{677F01DF-2E0F-4882-8839-565A79D3E0ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.Entity", "AuthServer.Entity\AuthServer.Entity.csproj", "{ED60302B-6660-4AAE-A187-958428F3BFC5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.DAL", "AuthServer.DAL\AuthServer.DAL.csproj", "{F14FB3A4-1274-4DD7-9F9C-605116BDA30D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.Business", "AuthServer.Business\AuthServer.Business.csproj", "{A903E403-A8AE-4EB1-98BE-6170B522D57F}"
@@ -33,10 +31,6 @@ Global
 		{677F01DF-2E0F-4882-8839-565A79D3E0ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{677F01DF-2E0F-4882-8839-565A79D3E0ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{677F01DF-2E0F-4882-8839-565A79D3E0ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED60302B-6660-4AAE-A187-958428F3BFC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED60302B-6660-4AAE-A187-958428F3BFC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED60302B-6660-4AAE-A187-958428F3BFC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED60302B-6660-4AAE-A187-958428F3BFC5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F14FB3A4-1274-4DD7-9F9C-605116BDA30D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F14FB3A4-1274-4DD7-9F9C-605116BDA30D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F14FB3A4-1274-4DD7-9F9C-605116BDA30D}.Release|Any CPU.ActiveCfg = Release|Any CPU
