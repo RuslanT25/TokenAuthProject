@@ -1,5 +1,6 @@
 
-using AuthServer.Api.Configurations;
+using AuthServer.Business.Configurations;
+using AuthServer.Core.Configurations;
 using Microsoft.Extensions.Configuration;
 
 namespace AuthServer.Api
@@ -19,6 +20,7 @@ namespace AuthServer.Api
 
             // var tokenOptions = builder.Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
             builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("TokenOption"));
+            builder.Services.Configure<List<Client>>(builder.Configuration.GetSection("Clients"));
 
             var app = builder.Build();
 
