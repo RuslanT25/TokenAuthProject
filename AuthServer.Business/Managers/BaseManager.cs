@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuthServer.Business.Services
+namespace AuthServer.Business.Managers
 {
     public class BaseManager<TEntity, TDto> : IBaseService<TEntity, TDto> where TEntity : class where TDto : class
     {

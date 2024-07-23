@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuthServer.Business.Services
+namespace AuthServer.Business.Managers
 {
     public static class SignManager
     {

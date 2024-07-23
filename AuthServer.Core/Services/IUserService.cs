@@ -10,6 +10,6 @@ namespace AuthServer.Core.Services
     public interface IUserService
     {
         Task<Response<AppUserDTO>> CreateUserAsync(CreateUserDTO createUser);
-        Task<Response<AppUserDTO>> GetUserByUserName(string userName);
+        Task<Response<AppUserDTO>> GetUserByUserNameAsync(string userName);
     }
 }

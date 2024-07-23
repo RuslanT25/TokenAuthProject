@@ -15,7 +15,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuthServer.Business.Services
+namespace AuthServer.Business.Managers
 {
     public class TokenManager : ITokenService
     {
