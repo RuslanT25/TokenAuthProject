@@ -5,6 +5,7 @@ using AuthServer.Core.Entities;
 using AuthServer.Core.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -36,9 +37,9 @@ namespace AuthServer.Business.Services
             return Convert.ToBase64String(numberByte);
         }
 
-        private IEnumerable<Claim> GetClaim(AppUser user, List<string> audience)
+        private IEnumerable<Claim> GetClaims(AppUser user, List<string> audience)
         {
-            var users = new List<Claim>
+            var claims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier,user.Id),
                 new(ClaimTypes.Email,user.Email!),
@@ -46,19 +47,80 @@ namespace AuthServer.Business.Services
                 new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
             };
 
-            users.AddRange(audience.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
+            claims.AddRange(audience.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
 
-            return users;
+            return claims;
         }
 
-        public TokenDTO CreateToken(AppUser user)
+        private IEnumerable<Claim> GetClaimsByNonIdentity(Client client)
         {
-            throw new NotImplementedException();
+            var claims = new List<Claim>
+            {
+                new(JwtRegisteredClaimNames.Sub, client.Id.ToString()),
+                new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
+            };
+
+            claims.AddRange(client.Audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
+
+            return claims;
+        }
+
+        public TokenDTO CreateToken(AppUser userApp)
+        {
+            var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
+            var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.RefreshTokenExpiration);
+            var securityKey = SignManager.GetSymmetricSecurityKey(_tokenOption.SecurityKey);
+
+            SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256Signature);
+
+            JwtSecurityToken jwtSecurityToken = new(
+                issuer: _tokenOption.Issuer,
+                expires: accessTokenExpiration,
+                notBefore: DateTime.Now,
+                claims: GetClaims(userApp, _tokenOption.Audience),
+                signingCredentials: signingCredentials);
+
+            var handler = new JwtSecurityTokenHandler();
+
+            var token = handler.WriteToken(jwtSecurityToken);
+
+            var tokenDto = new TokenDTO
+            {
+                AccessToken = token,
+                RefreshToken = CreateRefreshToken(),
+                AccessTokenExpiration = accessTokenExpiration,
+                RefreshTokenExpiration = refreshTokenExpiration
+            };
+
+            return tokenDto;
         }
 
         public ClientTokenDTO CreateTokenByClient(Client client)
         {
-            throw new NotImplementedException();
+            var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
+
+            var securityKey = SignManager.GetSymmetricSecurityKey(_tokenOption.SecurityKey);
+
+            SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256Signature);
+
+            JwtSecurityToken jwtSecurityToken = new(
+                issuer: _tokenOption.Issuer,
+                expires: accessTokenExpiration,
+                notBefore: DateTime.Now,
+                claims: GetClaimsByNonIdentity(client),
+                signingCredentials: signingCredentials);
+
+            var handler = new JwtSecurityTokenHandler();
+
+            var token = handler.WriteToken(jwtSecurityToken);
+
+            var tokenDto = new ClientTokenDTO
+            {
+                AccessToken = token,
+                AccessTokenExpiration = accessTokenExpiration,
+            };
+
+            return tokenDto;
         }
     }
 }
