@@ -28,7 +28,7 @@ namespace AuthServer.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<IAuthService, AuthManager>();
             builder.Services.AddScoped<IUserService, UserManager>();
             builder.Services.AddScoped<ITokenService, TokenManager>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
