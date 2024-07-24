@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using AuthServer.Business.Managers;
 using AuthServer.Core.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 
 namespace AuthServer.Api
 {
@@ -81,8 +82,9 @@ namespace AuthServer.Api
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
+            app.UseAuthorization();
 
             app.MapControllers();
 
