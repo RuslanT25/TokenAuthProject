@@ -37,7 +37,7 @@ namespace AuthServer.Api
 
             builder.Services.AddDbContext<AuthServerContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
             });
 
             builder.Services.AddIdentity<AppUser, IdentityRole>(Opt =>

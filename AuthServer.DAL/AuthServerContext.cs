@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,15 @@ namespace AuthServer.DAL
 
         public DbSet<Product> Products { get; set; }
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<UserRefreshToken>(entity =>
+            {
+                entity.HasKey(e => e.UserId);
+                entity.Property(e => e.RefreshToken).IsRequired().HasMaxLength(200);
+            });
+        }
     }
 }
