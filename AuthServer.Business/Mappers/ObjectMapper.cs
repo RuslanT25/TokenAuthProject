@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace AuthServer.Business.Mappers
         {
             var config = new MapperConfiguration(cfg =>
             {
+                cfg.Internal().MethodMappingEnabled = false;
                 cfg.AddProfile<MapProfile>();
             });
 

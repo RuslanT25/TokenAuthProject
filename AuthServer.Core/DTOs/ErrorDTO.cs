@@ -8,13 +8,8 @@ namespace AuthServer.Core.DTOs
 {
     public class ErrorDTO
     {
-        public List<string> Errors { get; private set; }
+        public List<string> Errors { get; private set; } = [];
         public bool IsShow { get; private set; }
-
-        public ErrorDTO()
-        {
-            Errors = [];
-        }
 
         public ErrorDTO(string error,bool isShow)
         {

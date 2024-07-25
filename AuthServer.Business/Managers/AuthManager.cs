@@ -44,6 +44,7 @@ namespace AuthServer.Business.Managers
             {
                 return Response<TokenDTO>.Fail("Email or Password is wrong", 400, true);
             }
+
             var token = _tokenService.CreateToken(user);
 
             var userRefreshToken = await _userRefreshTokenRepository.Where(x => x.UserId == user.Id).SingleOrDefaultAsync();

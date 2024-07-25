@@ -14,7 +14,7 @@ namespace MiniApp2.Api.Controllers
             var userName = User.Identity!.Name;
             var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
-            return Ok($"Your username - {userName}, your userId - {userId}");
+            return Ok($"Your username - {userName}, your userId - {userId!.Value}");
         }
     }
 }

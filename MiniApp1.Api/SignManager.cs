@@ -1,17 +1,17 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿    using Microsoft.IdentityModel.Tokens;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
-namespace MiniApp1.Api
-{
-    public static class SignManager
+    namespace MiniApp1.Api
     {
-        public static SecurityKey GetSymmetricSecurityKey(string securityKey)
+        public static class SignManager
         {
-            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
+            public static SecurityKey GetSymmetricSecurityKey(string securityKey)
+            {
+                return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
+            }
         }
     }
-}

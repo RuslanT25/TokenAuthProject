@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace MiniApp1.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class StockController : ControllerBase
@@ -14,7 +16,7 @@ namespace MiniApp1.Api.Controllers
             var userName = User.Identity!.Name;
             var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
-            return Ok($"Your username - {userName}, your userId - {userId}");
+            return Ok($"Your username - {userName}, your userId - {userId!.Value}");
         }
     }
 }

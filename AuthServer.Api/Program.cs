@@ -5,13 +5,12 @@ using AuthServer.Core.Services;
 using AuthServer.Core.UnitOfWork;
 using AuthServer.DAL.Repositories;
 using AuthServer.DAL;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AuthServer.Business.Managers;
 using AuthServer.Core.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
+using Microsoft.OpenApi.Models;
 
 namespace AuthServer.Api
 {
@@ -47,6 +46,8 @@ namespace AuthServer.Api
                 Opt.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<AuthServerContext>().AddDefaultTokenProviders();
 
+
+
             builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("TokenOption"));
             builder.Services.Configure<List<Client>>(builder.Configuration.GetSection("Clients"));
 
@@ -71,13 +72,44 @@ namespace AuthServer.Api
                 };
             });
 
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header. Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme {
+                    Reference = new OpenApiReference {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API v1");
+                });
             }
 
             app.UseHttpsRedirection();
