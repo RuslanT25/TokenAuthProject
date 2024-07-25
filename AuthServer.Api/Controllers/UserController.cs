@@ -41,5 +41,17 @@ namespace AuthServer.Api.Controllers
 
             return BadRequest(result);
         }
+
+        [HttpPost("CreateUserRoles/{userName}")]
+        public async Task<IActionResult> CreateUserRoles(string userName)
+        {
+            var result = await _userService.CreateUserRoles(userName);
+            if (result.IsSuccessful)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
     }
 }

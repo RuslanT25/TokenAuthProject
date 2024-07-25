@@ -2,6 +2,7 @@
 using AuthServer.Core.DTOs;
 using AuthServer.Core.Entities;
 using AuthServer.Core.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,12 @@ namespace AuthServer.Business.Managers
     public class UserManager : IUserService
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserManager(UserManager<AppUser> userManager)
+        public UserManager(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
         public async Task<Response<AppUserDTO>> CreateUserAsync(CreateUserDTO createUserDto)
         {
@@ -33,6 +36,21 @@ namespace AuthServer.Business.Managers
             }
 
             return Response<AppUserDTO>.Success(ObjectMapper.Mapper.Map<AppUserDTO>(user), 200);
+        }
+
+        public async Task<Response<NoDataDTO>> CreateUserRoles(string userName)
+        {
+            if (!await _roleManager.RoleExistsAsync("admin"))
+            {
+                await _roleManager.CreateAsync(new() { Name = "admin" });
+                await _roleManager.CreateAsync(new() { Name = "manager" });
+            }
+
+            var user = await _userManager.FindByNameAsync(userName);
+            await _userManager.AddToRoleAsync(user!, "admin");
+            await _userManager.AddToRoleAsync(user!, "manager");
+
+            return Response<NoDataDTO>.Success(StatusCodes.Status201Created);
         }
 
         public async Task<Response<AppUserDTO>> GetUserByUserNameAsync(string userName)
